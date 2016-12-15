@@ -85,7 +85,7 @@ logistic.regression.model <- function() {
   }
   
   # Specify prior for lower-level parameters (individual subjects)
-  for (subj in 1:Nsubj.other) {
+  for (subj in 1:Nsubj) {
     
     alpha[subj] ~ dnorm(alphagmean, alphagprec)
     beta1[subj] ~ dnorm(beta1gmean, beta1gprec)
