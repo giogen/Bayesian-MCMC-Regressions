@@ -1,0 +1,36 @@
+model {
+
+# Model observations
+for (obs in 1:Nobs) {
+    
+# Binary choice data (accept = 1 / reject = 0) ~ Bernoulli
+y[obs] ~ dbern(prob[obs])
+    
+# Logistic regression model
+logit(prob[obs]) <- alpha[subjID[obs]] + beta1[subjID[obs]]*x1[obs] + beta2[subjID[obs]]*x2[obs] + beta3[subjID[obs]]*x3[obs]
+    
+}
+  
+# Specify prior for lower-level parameters (individual subjects)
+for (subj in 1:Nsubj.other) {
+    
+alpha[subj] ~ dnorm(alphagmean, alphagprec)
+beta1[subj] ~ dnorm(beta1gmean, beta1gprec)
+beta2[subj] ~ dnorm(beta2gmean, beta2gprec)
+beta3[subj] ~ dnorm(beta3gmean, beta3gprec)
+
+}
+  
+# Specify hierarchical priors (population-level parameters)
+# Means
+alphagmean ~ dnorm(0, 0.001)
+beta1gmean ~ dnorm(0, 0.001)
+beta2gmean ~ dnorm(0, 0.001)
+beta3gmean ~ dnorm(0, 0.001)
+# Precisions
+alphagprec ~ dgamma(.1, .1)
+beta1gprec ~ dgamma(.1, .1)
+beta2gprec ~ dgamma(.1, .1)
+beta3gprec ~ dgamma(.1, .1)
+
+}
